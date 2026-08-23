@@ -1,5 +1,5 @@
 # Exp - 6(AAI) - Solving a Stochastic Grid-World Markov Decision Process Using Value Iteration and Policy Iteration
-
+# By Dr. N SARAVANAN, TSML006,ASSISTANT PROFESSOR,AIML,SEC
 A compact Python implementation of two dynamic-programming methods for solving a stochastic grid-world Markov decision process (MDP):
 
 - **Value Iteration**
