@@ -1,4 +1,4 @@
-# Grid-World Value Iteration and Policy Iteration
+# Solving a Stochastic Grid-World Markov Decision Process Using Value Iteration and Policy Iteration
 
 A compact Python implementation of two dynamic-programming methods for solving a stochastic grid-world Markov decision process (MDP):
 
