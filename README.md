@@ -1,4 +1,4 @@
-# Solving a Stochastic Grid-World Markov Decision Process Using Value Iteration and Policy Iteration
+# Exp - 6(AAI) - Solving a Stochastic Grid-World Markov Decision Process Using Value Iteration and Policy Iteration
 
 A compact Python implementation of two dynamic-programming methods for solving a stochastic grid-world Markov decision process (MDP):
 
@@ -22,6 +22,77 @@ Solving problems like this is important because many real systems operate throug
 - **Reinforcement learning:** training an agent to act effectively from feedback rather than fixed instructions.
 
 Value iteration and policy iteration provide principled ways to solve a Markov decision process (MDP). They evaluate both immediate rewards and expected future utility, producing a policy that tells an agent what action to take in each state. This makes them foundational techniques for planning under uncertainty.
+
+## Mathematical formulation
+
+
+| Symbol | Meaning |
+| --- | --- |
+| s| Current state |
+| a | Action selected in state \(s\) |
+| s'| Possible successor (next) state |
+| R(s) | Immediate reward in state \(s\) |
+| P(s' \| s, a) | Probability of reaching \(s'\) after taking \(a\) in \(s\). The vertical bar \| means “given.” |
+| γ | Discount factor, which controls how much future rewards matter relative to immediate rewards. In this program, γ = 1.0. |
+
+### Bellman optimality equation
+
+The optimal utility of a state is its immediate reward plus the discounted expected utility of the best available action:
+
+$$
+V^{\star}(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a)V^{*}(s')
+$$
+
+### Value iteration update
+
+Value iteration repeatedly applies the Bellman optimality update until successive utility values change by less than the chosen tolerance:
+
+$$
+V_{k+1}(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a)V_k(s')
+$$
+
+For this program, an intended action succeeds with probability \(0.8\), while the agent drifts left or right with probability \(0.1\) each. Therefore, the expected successor utility is:
+
+$$
+\sum_{s'} P(s' \mid s, a)V(s') =
+0.8V(s_{\text{intended}}) +
+0.1V(s_{\text{left}}) +
+0.1V(s_{\text{right}})
+$$
+
+### Arbitrary initial policy
+
+Policy iteration begins with any valid action at each non-terminal state:
+
+$$
+\pi_0(s) \in A(s), \quad \forall s \notin \text{Terminal States}
+$$
+
+This implementation initializes the policy with `UP` for every non-terminal state.
+
+### Policy evaluation
+
+For a fixed policy \(\pi\), the utility of each state is calculated as:
+
+$$
+V^{\pi}(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi(s))V^{\pi}(s')
+$$
+
+### Policy improvement
+
+The policy is improved by selecting the action with the largest expected successor utility:
+
+$$
+\pi_{\text{new}}(s) =
+\arg\max_{a \in A(s)}
+\sum_{s'} P(s' \mid s, a)V^{\pi}(s')
+$$
+
+Policy evaluation and improvement repeat until the policy does not change:
+
+$$
+\pi_{\text{new}} = \pi
+$$
 
 ## Grid-world configuration
 
@@ -87,10 +158,6 @@ Example output:
  ['UP' 'LEFT' 'LEFT' 'LEFT']]
 ```
 
-## Choose an algorithm
-
-The active algorithm is selected near the bottom of `valuePolicyIter.py`.
-
 ### Value iteration (default)
 
 ```python
@@ -109,8 +176,6 @@ U, policy = policy_iteration(gamma, epsilon)
 
 Policy iteration alternates between evaluating the current policy and improving it until no action changes.
 
-
-
 ## Customize the environment
 
 Edit these values near the top of the script to experiment with other MDPs:
@@ -127,5 +192,3 @@ Edit these values near the top of the script to experiment with other MDPs:
 
 - Terminal-state utilities stay fixed at their assigned rewards.
 - The policy grid includes a label for every non-terminal coordinate, including the blocked coordinate. Since that cell cannot be entered, its displayed action is not part of the reachable environment.
-
-
