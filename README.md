@@ -12,12 +12,19 @@ To implement and solve a Stochastic Grid-World Markov Decision Process (MDP) usi
 ## ALGORITHM
 
 Initialize a 3 × 4 grid with rewards, goal state, trap state, and blocked cell.
+
 Initialize utility values and assign fixed rewards to the terminal states.
+
 Define the four possible actions: UP, DOWN, LEFT, RIGHT.
+
 Define stochastic movement with 0.8 probability for the intended direction and 0.1 probability for each side drift.
+
 Calculate the expected utility of each action using the Bellman equation.
+
 Update each non-terminal state's utility using the maximum expected utility.
+
 Repeat the process until the utility change is less than ε = 1e-4.
+
 Select the action with the highest utility as the optimal policy and display the utility table and policy grid.
 
 ## Program
